@@ -112,7 +112,7 @@ from wtforms.validators import DataRequired
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Логин', validators=[DataRequired()])
+    email = StringField('Почта', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     remember_me = BooleanField('Запомнить меня')
     submit = SubmitField('Войти')
@@ -121,10 +121,10 @@ class LoginForm(FlaskForm):
 
 class RegForm(FlaskForm):
     username = StringField('Имя', validators=[DataRequired()])
+    email = StringField('Почта', validators=[DataRequired()])
     surname = StringField('Фамилия', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
     password_test = PasswordField('Повторите пароль', validators=[DataRequired()])
-    remember_me = BooleanField('Запомнить меня')
     back = SubmitField('Назад')
     reg = SubmitField('Зарегистрироваться')
 
@@ -135,7 +135,7 @@ class AddNewsForm(FlaskForm):
     submit = SubmitField('Добавить')
 
 
-app = Flask(__name__,)
+app = Flask(__name__, )
 app.config['SECRET_KEY'] = '12345'
 user_id = None
 user_status = False
@@ -146,7 +146,7 @@ user_status = False
 def login():
     global user_id, user_status
     form = LoginForm()
-    user_status, user_id = user_model.exists(form.username.data, form.password.data)
+    user_status, user_id = user_model.exists(form.email.data, form.password.data)
     if form.submit.data:
         if form.validate_on_submit() and user_status:
             return redirect('/news')
@@ -163,8 +163,10 @@ def register():
         return redirect('/login')
     elif form.reg.data:
         if form.validate_on_submit():
-            user_model.insert(form.username.data, form.password.data)
-            return redirect('/login')
+            if form.password.data == form.password_test.data:
+                user_model.insert(form.email.data, form.password.data)
+                return redirect('/login')
+
     return render_template('register.html', title='Авторизация', form=form)
 
 
@@ -198,6 +200,8 @@ def delete_news(news_id):
         return redirect('/login')
     news_model.delete(news_id)
     return redirect("/index")
+
+
 
 
 if __name__ == '__main__':
