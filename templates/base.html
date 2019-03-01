@@ -1,23 +1,84 @@
 <!doctype html>
 <html lang="en">
 <head>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <title>{{title}}</title>
-</head>
-  <body>
-    <header>
-      <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">Наше приложение</a>
-          {% if "username" in session %}
-            <a class="navbar-brand" href="/logout">{{session['username']}}</a>
-          {% endif %}
-      </nav>
-    </header>
-    <!-- Begin page content -->
-    <main role="main" class="container">
-        {% block content %}{% endblock %}
-    </main>
-  </body>
+
+    <style type="text/css">
+        body {
+            position: static;
+            background: url("https://static.planetminecraft.com/files/resource_media/screenshot/1236/pack_3530346.jpg") fixed;
+            background-size: 256px;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .navigate {
+            position: fixed;
+
+            height: 50px;
+            width: 100%;
+
+            top: 0;
+            left: 0;
+            right: 0;
+
+            background: #7fbe55;
+            background-size: 256px;
+            border: 2px solid #609f35;
+            box-shadow: 0 0 20px 0px rgba(0,0,0,0.5);
+        }
+
+        .m_page {
+            position: absolute;
+            top: 50px;
+        }
+
+        .l_page {
+            width: 100%;
+            margin-left: -30%;
+            margin-right: -30%;
+            padding: 20px;
+        }
+
+        .RegForm {
+            font-family: "Minecraft Rus";
+            position: relative;
+            background: #7fbe55;
+            border-radius: 5px;
+            padding: 20px;
+            border: 2px solid #609f35;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
+        }
+        .RegForm>input {
+            background: none;
+        }
+
+
+    </style>
+
+    {% block head %}{% endblock %}
+    <title>{{ title }}</title>
+
+    </head>
+
+    <body>
+        <main role="main" class="m_page">
+
+            <header>
+            <nav class="navigate">
+                <a class="navbar-brand" href="#">Наше приложение</a>
+                {% if "username" in session %}
+                    <a class="navbar-brand" href="/logout">{{ session['username'] }}</a>
+                {% endif %}
+            </nav>
+            </header>
+
+            {% block content %}{% endblock %}
+        </main>
+    </body>
 </html>

@@ -135,8 +135,8 @@ class AddNewsForm(FlaskForm):
     submit = SubmitField('Добавить')
 
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+app = Flask(__name__,)
+app.config['SECRET_KEY'] = '12345'
 user_id = None
 user_status = False
 
