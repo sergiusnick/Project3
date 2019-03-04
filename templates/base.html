@@ -72,9 +72,9 @@
             <header>
             <nav class="navigate">
                 <a class="navbar-brand" href="#">ВЯндексе</a>
-                {% if "username" in session %}
-                    <a class="navbar-brand" href="/logout">{{ session['username'] }}</a>
-
+                {% if session['user_status'] %}
+                    <a class="profile_button" href="/profile">{{ session['name'] }}</a>
+                    <a class="logout_button" href="/logout">Выход</a>
                 {% endif %}
             </nav>
             </header>

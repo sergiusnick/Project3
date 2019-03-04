@@ -22,16 +22,18 @@ class UserModel:
         cursor.execute('''CREATE TABLE IF NOT EXISTS users 
                             (id INTEGER PRIMARY KEY AUTOINCREMENT, 
                              user_name VARCHAR(50),
+                             user_surname VARCHAR(50),
+                             user_email VARCHAR(50),
                              password_hash VARCHAR(128)
                              )''')
         cursor.close()
         self.connection.commit()
 
-    def insert(self, user_name, password_hash):
+    def insert(self, user_name, user_surname, user_email, password_hash):
         cursor = self.connection.cursor()
         cursor.execute('''INSERT INTO users 
-                          (user_name, password_hash) 
-                          VALUES (?,?)''', (user_name, password_hash))
+                          (user_name, user_surname, user_email, password_hash) 
+                          VALUES (?,?,?,?)''', (user_name, user_surname, user_email, password_hash))
         cursor.close()
         self.connection.commit()
 
@@ -105,7 +107,7 @@ news_model = NewsModel(db.get_connection())
 user_model.init_table()
 news_model.init_table()
 
-from flask import Flask, redirect, render_template
+from flask import Flask, redirect, render_template, session
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired
@@ -147,13 +149,21 @@ def login():
     global user_id, user_status
     form = LoginForm()
     user_status, user_id = user_model.exists(form.email.data, form.password.data)
+    session['user_status'] = False
     if form.submit.data:
         if form.validate_on_submit() and user_status:
+            session['user_status'] = True
+            session['id'], session['name'], session['surname'], session['email'], _ = user_model.get(user_id)
+            print(user_model.get(user_id))
             return redirect('/news')
     elif form.reg.data:
         return redirect('/register')
-    return render_template('login.html', title='Авторизация', form=form)
+    return render_template('login.html', title='Авторизация', form=form, user_status=user_status)
 
+@app.route('/logout', methods=['GET'])
+def logout():
+    session = {}
+    return redirect('/login')
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -164,7 +174,7 @@ def register():
     elif form.reg.data:
         if form.validate_on_submit():
             if form.password.data == form.password_test.data:
-                user_model.insert(form.email.data, form.password.data)
+                user_model.insert(form.email.data, form.surname.data, form.email.data, form.password.data)
                 return redirect('/login')
 
     return render_template('register.html', title='Авторизация', form=form)
@@ -200,8 +210,6 @@ def delete_news(news_id):
         return redirect('/login')
     news_model.delete(news_id)
     return redirect("/index")
-
-
 
 
 if __name__ == '__main__':
