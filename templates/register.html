@@ -6,8 +6,7 @@
         <div class="RegForm">
             <h1>Регистрация</h1>
             <p>
-                {{ form.username.label }}<br>
-                {{ form.username }}<br>
+                {{ form.username(placeholder='Имя') }}<br>
                 {% for error in form.username.errors %}
                     <div class="alert alert-danger" role="alert">
                         {{ error }}
@@ -15,8 +14,7 @@
                 {% endfor %}
             </p>
             <p>
-                {{ form.surname.label }}<br>
-                {{ form.surname }}<br>
+                {{ form.surname(placeholder='Фамилия') }}<br>
                 {% for error in form.surname.errors %}
                     <div class="alert alert-danger" role="alert">
                         {{ error }}
@@ -24,8 +22,7 @@
                 {% endfor %}
             </p>
             <p>
-                {{ form.email.label }}<br>
-                {{ form.email }}<br>
+                {{ form.email(placeholder='Почта') }}<br>
                 {% for error in form.email.errors %}
                     <div class="alert alert-danger" role="alert">
                         {{ error }}
@@ -33,8 +30,7 @@
                 {% endfor %}
             </p>
             <p>
-                {{ form.password.label }}<br>
-                {{ form.password }}<br>
+                {{ form.password(placeholder='Пароль') }}<br>
                 {% for error in form.password.errors %}
                     <div class="alert alert-danger" role="alert">
                         {{ error }}
@@ -43,15 +39,14 @@
             </p>
 
             <p>
-                {{ form.password_test.label }}<br>
-                {{ form.password_test }}<br>
+                {{ form.password_test(placeholder='Повторите пароль') }}<br>
                 {% for error in form.password_test.errors %}
                     <div class="alert alert-danger" role="alert">
                         {{ error }}
                     </div>
                 {% endfor %}
             </p>
-            <p>{{ form.back() }} {{ form.reg() }}</p>
+            <p>{{ form.reg(id='button') }} {{ form.back(id='button') }}</p>
         </div>
     </form>
 {% endblock %}

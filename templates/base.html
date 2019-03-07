@@ -7,14 +7,12 @@
 
     <style type="text/css">
         body {
+            font-family: "Times New Roman";
             position: static;
-            background: url("https://static.planetminecraft.com/files/resource_media/screenshot/1236/pack_3530346.jpg") fixed;
-            background-size: 256px;
             margin: 0;
             padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: url("https://cdn-images-1.medium.com/max/1200/1*kFaSuc5rVdJ_fM2c_bHszQ.png") no-repeat;
+            background-size: 100%;
         }
 
         .navigate {
@@ -26,38 +24,70 @@
             top: 0;
             left: 0;
             right: 0;
+            background: linear-gradient(to bottom,rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 70%, rgba(255, 255, 255, 0) 100%);
 
-            background: #7fbe55;
-            background-size: 256px;
-            border: 2px solid #609f35;
-            box-shadow: 0 0 20px 0px rgba(0,0,0,0.5);
+
         }
 
-        .m_page {
-            position: absolute;
-            top: 50px;
-        }
-
-        .l_page {
+        .page {
+            margin-top: 50px;
             width: 100%;
-            margin-left: -30%;
-            margin-right: -30%;
-            padding: 20px;
+            height: 100%;
+        }
+
+        .transform {
+            position: absolute;
+            top: 200px;
+            width: 100%;
+            min-height: 600px;
+            background: #ffcc00;
+            -webkit-transform:  skewY(-5deg);
+            -moz-transform: skewY(-5deg);
+            transform: skewY(-5deg);
+            z-index: -1;
         }
 
         .RegForm {
-            font-family: "Minecraft Rus";
-            position: relative;
-            background: #7fbe55;
+            background: white;
+            margin-left: 60%;
+            padding: 5px;
+            min-width: 220px;
+            max-width: 220px;
+            margin-top: 270px;
             border-radius: 5px;
-            padding: 20px;
-            border: 2px solid #609f35;
-            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.2);
-        }
-        .RegForm>input {
-            background: none;
+            -webkit-box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+            -moz-box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+            box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
         }
 
+        .move {
+            position: absolute;
+            margin-left: 12px;
+        }
+
+        .r_page {
+            background: white;
+            margin-right: 30%;
+            margin-left: 30%;
+        }
+
+        input {
+            width: 90%;
+            border: none;
+            margin-left: 5%;
+            margin-right: 5%;
+            border-bottom: 2px solid red;
+        }
+
+        #button {
+            border: None;
+            margin-top: 5px;
+            transition: .5s;
+        }
+
+        #button:hover {
+            transform: scale(0.95);
+        }
 
     </style>
 
@@ -67,19 +97,24 @@
     </head>
 
     <body>
-        <main role="main" class="m_page">
-
-            <header>
+        <header>
             <nav class="navigate">
                 <a class="navbar-brand" href="#">ВЯндексе</a>
                 {% if session['user_status'] %}
-                    <a class="profile_button" href="/profile">{{ session['name'] }}</a>
+                    <a class="profile_button" href="/profile/{{session['id']}}">{{ session['name'] }}</a>
                     <a class="logout_button" href="/logout">Выход</a>
                 {% endif %}
             </nav>
-            </header>
+        </header>
 
-            {% block content %}{% endblock %}
-        </main>
+        <div class="transform"></div>
+
+        <div class="page">
+            <main role="main" class="main_contents">
+                {% block content %}{% endblock %}
+            </main>
+
+
+        </div>
     </body>
 </html>

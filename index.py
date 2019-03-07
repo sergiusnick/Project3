@@ -1,4 +1,8 @@
 import sqlite3
+from flask import Flask, redirect, render_template, session
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms.validators import DataRequired
 
 
 class DB:
@@ -49,9 +53,9 @@ class UserModel:
         rows = cursor.fetchall()
         return rows
 
-    def exists(self, user_name, password_hash):
+    def exists(self, user_email, password_hash):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE user_name = ? AND password_hash = ?", (user_name, password_hash))
+        cursor.execute("SELECT * FROM users WHERE user_email = ? AND password_hash = ?", (user_email, password_hash))
         row = cursor.fetchone()
         return (True, row[0]) if row else (False, None)
 
@@ -101,18 +105,6 @@ class NewsModel:
         self.connection.commit()
 
 
-db = DB()
-user_model = UserModel(db.get_connection())
-news_model = NewsModel(db.get_connection())
-user_model.init_table()
-news_model.init_table()
-
-from flask import Flask, redirect, render_template, session
-from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired
-
-
 class LoginForm(FlaskForm):
     email = StringField('Почта', validators=[DataRequired()])
     password = PasswordField('Пароль', validators=[DataRequired()])
@@ -137,6 +129,15 @@ class AddNewsForm(FlaskForm):
     submit = SubmitField('Добавить')
 
 
+class Profile(FlaskForm):
+    name = StringField('Имя')
+
+
+db = DB()
+user_model = UserModel(db.get_connection())
+news_model = NewsModel(db.get_connection())
+user_model.init_table()
+news_model.init_table()
 app = Flask(__name__, )
 app.config['SECRET_KEY'] = '12345'
 user_id = None
@@ -153,21 +154,22 @@ def login():
     if form.submit.data:
         if form.validate_on_submit() and user_status:
             session['user_status'] = True
-            session['id'], session['name'], session['surname'], session['email'], _ = user_model.get(user_id)
+            session['id'], session['name'], session['surname'], session['email'] = user_model.get(user_id)[:4]
             print(user_model.get(user_id))
             return redirect('/news')
     elif form.reg.data:
         return redirect('/register')
     return render_template('login.html', title='Авторизация', form=form, user_status=user_status)
 
+
 @app.route('/logout', methods=['GET'])
 def logout():
     session = {}
     return redirect('/login')
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    global user_id, user_status
     form = RegForm()
     if form.back.data:
         return redirect('/login')
@@ -180,12 +182,19 @@ def register():
     return render_template('register.html', title='Авторизация', form=form)
 
 
+@app.route('/profile/<int:user_id>', methods=['GET', 'POST'])
+def profile(user_id):
+    form = Profile()
+    name, surname, email, = user_model.get(user_id)[1:4:]
+    return render_template('profile.html', title=f'{name} {surname}', form=form,
+                           Name=name, Surname=surname)
+
+
 @app.route('/index')
 @app.route('/news')
 def news():
     if user_status:
         news_list = news_model.get_all(user_id)
-        print(news_list)
         return render_template('news.html', news=news_list)
     else:
         return redirect('/login')
