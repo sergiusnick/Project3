@@ -99,9 +99,9 @@
     <body>
         <header>
             <nav class="navigate">
-                <a class="navbar-brand" href="#">ВЯндексе</a>
                 {% if session['user_status'] %}
                     <a class="profile_button" href="/profile/{{session['id']}}">{{ session['name'] }}</a>
+                    <a class="button_news" href="/news">Моя страница</a>
                     <a class="logout_button" href="/logout">Выход</a>
                 {% endif %}
             </nav>

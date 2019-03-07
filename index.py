@@ -43,7 +43,7 @@ class UserModel:
 
     def get(self, user_id):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE id = ?", (str(user_id)))
+        cursor.execute("SELECT * FROM users WHERE id =" + (str(user_id)))
         row = cursor.fetchone()
         return row
 
@@ -85,7 +85,7 @@ class NewsModel:
 
     def get(self, news_id):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM news WHERE id = ?", (str(news_id)))
+        cursor.execute("SELECT * FROM news WHERE id = ?" + (str(news_id)))
         row = cursor.fetchone()
         return row
 
@@ -219,6 +219,11 @@ def delete_news(news_id):
         return redirect('/login')
     news_model.delete(news_id)
     return redirect("/index")
+
+
+@app.route('/news', methods=['GET'])
+def button_news():
+    return redirect('./news')
 
 
 if __name__ == '__main__':
