@@ -12,21 +12,31 @@
             margin: 0;
             padding: 0;
             background: url("https://cdn-images-1.medium.com/max/1200/1*kFaSuc5rVdJ_fM2c_bHszQ.png") no-repeat;
-            background-size: 100%;
+            background-size: cover;
         }
 
         .navigate {
             position: fixed;
+            height: 400px;
+            width: 180px;
+            background: white;
+            margin-left: 18%;
+            padding: 5px;
+            margin-top: 70px;
+            border-radius: 3px;
+            -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+            -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+        }
 
-            height: 50px;
+        .profile_button {
+            cursor: pointer;
             width: 100%;
-
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to bottom,rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 70%, rgba(255, 255, 255, 0) 100%);
-
-
+            padding: 5px 0 5px 0;
+            border-radius: 3px;
+            text-align: left;
+            text-align-last: center;
+            transition: background-color ease-out 0.5s;
         }
 
         .page {
@@ -41,7 +51,7 @@
             width: 100%;
             min-height: 600px;
             background: #ffcc00;
-            -webkit-transform:  skewY(-5deg);
+            -webkit-transform: skewY(-5deg);
             -moz-transform: skewY(-5deg);
             transform: skewY(-5deg);
             z-index: -1;
@@ -54,10 +64,10 @@
             min-width: 220px;
             max-width: 220px;
             margin-top: 270px;
-            border-radius: 5px;
-            -webkit-box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
-            -moz-box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
-            box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+            border-radius: 3px;
+            -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+            -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
         }
 
         .move {
@@ -69,14 +79,37 @@
             background: white;
             margin-right: 30%;
             margin-left: 30%;
+            padding: 5px;
+            border-radius: 3px;
         }
 
-        input {
-            width: 90%;
-            border: none;
-            margin-left: 5%;
+        .LogRegError {
+            position: relative;
+            left: 0;
+            background: none;
+            padding: 0;
             margin-right: 5%;
+            margin-left: 5%;
+        }
+
+        .post {
+            min-width: 645px;
+            background: white;
+            margin: 10px 30% 10px 30%;
+            padding: 0px 5px 0 5px;
+            border-radius: 3px;
+        }
+
+        .post_name {
+            font-size: 25px;
+        }
+
+        .post_content {
             border-bottom: 2px solid red;
+        }
+
+        .delete_post {
+            width: 100%;
         }
 
         #button {
@@ -89,32 +122,68 @@
             transform: scale(0.95);
         }
 
+        input {
+            width: 90%;
+            border: none;
+            margin-left: 5%;
+            margin-right: 5%;
+            border-bottom: 2px solid red;
+        }
+
+        .profile_button:hover {
+            color: black;
+            background: #ffcc00;
+        }
+
+
+        .avatar>img {
+            width: 150px;
+            height: 150px;
+            border-radius: 3px;
+        }
+
+        .User_ID {
+            position: absolute;
+            top: 35px;
+            margin-left: 160px;
+        }
+
     </style>
 
     {% block head %}{% endblock %}
     <title>{{ title }}</title>
 
-    </head>
+</head>
 
-    <body>
-        <header>
-            <nav class="navigate">
-                {% if session['user_status'] %}
-                    <a class="profile_button" href="/profile/{{session['id']}}">{{ session['name'] }}</a>
-                    <a class="button_news" href="/news">Моя страница</a>
-                    <a class="logout_button" href="/logout">Выход</a>
-                {% endif %}
-            </nav>
-        </header>
+<body>
+    {% if session['user_status'] %}
+        <div class="navigate">
 
-        <div class="transform"></div>
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/profile/{{ session['id'] }}'">
+                Моя Страница
+            </div>
 
-        <div class="page">
-            <main role="main" class="main_contents">
-                {% block content %}{% endblock %}
-            </main>
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/news'">
+                Новости
+            </div>
 
-
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/logout'">
+                Выход
+            </div>
         </div>
-    </body>
+    {% endif %}
+
+<div class="transform"></div>
+
+<div class="page">
+    <main role="main" class="main_contents">
+        {% block content %}{% endblock %}
+    </main>
+
+
+</div>
+</body>
 </html>

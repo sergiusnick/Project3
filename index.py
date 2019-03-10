@@ -43,7 +43,7 @@ class UserModel:
 
     def get(self, user_id):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM users WHERE id =" + (str(user_id)))
+        cursor.execute(f'''SELECT * FROM users WHERE id = {user_id}''')
         row = cursor.fetchone()
         return row
 
@@ -85,22 +85,22 @@ class NewsModel:
 
     def get(self, news_id):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM news WHERE id = ?" + (str(news_id)))
+        cursor.execute('''SELECT * FROM news WHERE id = ?''' + (str(news_id)))
         row = cursor.fetchone()
         return row
 
     def get_all(self, user_id=None):
         cursor = self.connection.cursor()
         if user_id:
-            cursor.execute("SELECT * FROM news WHERE user_id = " + (str(user_id)) + " ORDER BY id DESC")
+            cursor.execute(f'''SELECT * FROM news WHERE user_id = {user_id} ORDER BY id DESC''')
         else:
-            cursor.execute("SELECT * FROM news")
+            cursor.execute('''SELECT * FROM news''')
         rows = cursor.fetchall()
         return rows
 
     def delete(self, news_id):
         cursor = self.connection.cursor()
-        cursor.execute('''DELETE FROM news WHERE id = ''' + str(news_id))
+        cursor.execute(f'''DELETE FROM news WHERE id = {news_id}''')
         cursor.close()
         self.connection.commit()
 
@@ -185,8 +185,9 @@ def register():
 @app.route('/profile/<int:user_id>', methods=['GET', 'POST'])
 def profile(user_id):
     form = Profile()
+    news_list = news_model.get_all(user_id)
     name, surname, email, = user_model.get(user_id)[1:4:]
-    return render_template('profile.html', title=f'{name} {surname}', form=form,
+    return render_template('profile.html', title=f'{name} {surname}', form=form, news=news_list,
                            Name=name, Surname=surname)
 
 
