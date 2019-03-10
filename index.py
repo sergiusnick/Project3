@@ -193,12 +193,10 @@ def profile(user_id):
     name, surname, email, = user_model.get(user_id)[1:4:]
     return render_template('profile.html', title=f'{name} {surname}', form=form, news=news_list,
                            Name=name, Surname=surname)
-def message(user_id):
-    form = Message()
-    news_list = news_model.get_all(user_id)
-    name, surname, email, = user_model.get(user_id)[1:4:]
-    return render_template('message.html', title=f'{name} {surname}', form=form, news=news_list,
-                           Name=name, Surname=surname)
+
+
+
+
 @app.route('/index')
 @app.route('/news')
 def news():
