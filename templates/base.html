@@ -17,10 +17,10 @@
 
         .navigate {
             position: fixed;
-            height: 400px;
+            height: 345px;
             width: 180px;
             background: white;
-            margin-left: 18%;
+            margin-left: 1%;
             padding: 5px;
             margin-top: 70px;
             border-radius: 3px;
@@ -32,7 +32,7 @@
         .profile_button {
             cursor: pointer;
             width: 100%;
-            padding: 5px 0 5px 0;
+            padding: 5px 0 50px 0;
             border-radius: 3px;
             text-align: left;
             text-align-last: center;
@@ -156,25 +156,6 @@
 </head>
 
 <body>
-    {% if session['user_status'] %}
-        <div class="navigate">
-
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/profile/{{ session['id'] }}'">
-                Моя Страница
-            </div>
-
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/news'">
-                Новости
-            </div>
-
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/logout'">
-                Выход
-            </div>
-        </div>
-    {% endif %}
 
 <div class="transform"></div>
 

@@ -1,21 +1,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="profile_page">
 
+    <div class="profile_page">
+    </div>
+    {% if session['user_status'] %}
+        <div class="navigate">
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/profile/{{ session['id'] }}'">
+                Моя Страница
+            </div>
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/news'">
+                Новости
+            </div>
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/message/'">
+                Сообщения
+            </div>
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/groups/'">
+                Сообщества
+            </div>
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/logout'">
+                Выход
+            </div>
+        </div>
+    {% endif %}
         <div class="l_page">
         </div>
 
         <div class="r_page">
+            <div class="add_post">
+                <a href="/add_news">Добавить новость</a>
+            </div>
             <div class="avatar">
                 <img src="../static/img/404.png">
             </div>
             <div class="User_ID">
                 <h2>{{ Name }} {{ Surname }}</h2>
             </div>
-        </div>
-        <div class="add_post">
-            <a href="/add_news">Добавить новость</a>
+
         </div>
         {% for item in news %}
             <div class="post">
@@ -31,5 +62,4 @@
             </div>
         {% endfor %}
     </div>
-
 {% endblock %}

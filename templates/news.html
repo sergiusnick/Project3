@@ -1,10 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="add_post">
-        <a href="/add_news">Добавить новость</a>
     </div>
+    {% if session['user_status'] %}
+        <div class="navigate">
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/profile/{{ session['id'] }}'">
+                Моя Страница
+            </div>
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/news'">
+                Новости
+            </div>
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/message/'">
+                Сообщения
+            </div>
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/groups/'">
+                Сообщества
+            </div>
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/logout'">
+                Выход
+            </div>
+        </div>
+    {% endif %}
     {% for item in news %}
+    <div class="add_post">
+            <a href="/news">Новости</a>
         <div class="post">
             <div class="post_name">{{ item[1] }}</div>
 
