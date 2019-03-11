@@ -156,7 +156,35 @@
 </head>
 
 <body>
+ {% if session['user_status'] %}
+        <div class="navigate">
 
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/profile/{{ session['id'] }}'">
+                Моя Страница
+            </div>
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/news'">
+                Новости
+            </div>
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/message/'">
+                Сообщения
+            </div>
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/users/'">
+                Список пользователей
+            </div>
+
+            <div class="profile_button"
+                 onclick="javascript:document.location.href='/logout'">
+                Выход
+            </div>
+        </div>
+    {% endif %}
 <div class="transform"></div>
 
 <div class="page">

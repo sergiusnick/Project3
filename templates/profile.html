@@ -4,35 +4,7 @@
 
     <div class="profile_page">
     </div>
-    {% if session['user_status'] %}
-        <div class="navigate">
-
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/profile/{{ session['id'] }}'">
-                Моя Страница
-            </div>
-
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/news'">
-                Новости
-            </div>
-
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/message/'">
-                Сообщения
-            </div>
-
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/groups/'">
-                Сообщества
-            </div>
-
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/logout'">
-                Выход
-            </div>
-        </div>
-    {% endif %}
+   
         <div class="l_page">
         </div>
 
