@@ -1,17 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% for item in news %}
-        <div class="Post">
-            <div class="PostTitle">{{ item[1] }}</div>
+    <div class="ProfilePage">
+        {% for item in news %}
 
-            <div class="PostContent">
-                {{ item[2] }}
+            <div class="Post">
+                <div class="PostTitle">{{ item[1] }}</div>
+
+                <div class="PostContent">
+                    {{ item[2] }}
+                </div>
+
+                {% if lock %}
+                    <div class="PostDelete" onclick="javascript:document.location.href='/delete_news/{{ item[0] }}'">
+                        ✖
+                    </div>
+                {% else %}
+                    <div class="PostAuthor">
+                        <div class="PostAuthorContent" onclick="javascript:document.location.href='/profile/{{ item[3] }}'">
+                            {{ ' '.join(user.get(item[3])[1:3]) }}
+                        </div>
+                    </div>
+                {% endif %}
+
             </div>
 
-            <div class="PostDelete" onclick="javascript:document.location.href='/delete_news/{{ item[0] }}'">
-                Удалить новость
-            </div>
-        </div>  
-    {% endfor %}
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -10,28 +10,30 @@
                 <div class="User_ID">{{ Name }} {{ Surname }}</div>
         </div>
 
-        <div class="PostCreate">
-            <form action="" method="post" novalidate>
-                {{ form.hidden_tag() }}
+        {% if lock %}
+            <div class="PostCreate">
+                <form action="" method="post" novalidate>
+                    {{ form.hidden_tag() }}
 
-                {{ form.title(placeholder='Заголовок новости') }}
-                {% for error in form.title.errors %}
-                    <script type='text/javascript'>
-                        document.write('<div class="Error">Введите заголовок новости!</div>');
-                    </script>
-                {% endfor %}
+                    {{ form.title(placeholder='Заголовок новости') }}
+                    {% for error in form.title.errors %}
+                        <script type='text/javascript'>
+                            document.write('<div class="Error">Введите заголовок новости!</div>');
+                        </script>
+                    {% endfor %}
 
-                {{ form.content(placeholder='Текст новости',
-                    onclick="document.getElementById('content').style.height = '150px';") }}
-                {% for error in form.content.errors %}
-                    <script type='text/javascript'>
-                        document.write('<div class="Error">Введите текст новости!</div>');
-                    </script>
-                {% endfor %}
+                    {{ form.content(placeholder='Текст новости',
+                        onclick="document.getElementById('content').style.height = '150px';") }}
+                    {% for error in form.content.errors %}
+                        <script type='text/javascript'>
+                            document.write('<div class="Error">Введите текст новости!</div>');
+                        </script>
+                    {% endfor %}
 
-                {{ form.submit(id="button") }}
-            </form>
-        </div>
+                    {{ form.submit(id="button") }}
+                </form>
+            </div>
+        {% endif %}
 
         <div class="ProfileContent">
             {% for item in news %}
@@ -42,9 +44,12 @@
                         {{ item[2] }}
                     </div>
 
-                    <div class="PostDelete" onclick="javascript:document.location.href='/delete_news/{{ item[0] }}'">
-                        Удалить новость
-                    </div>
+                    {% if lock %}
+                        <div class="PostDelete" onclick="javascript:document.location.href='/delete_news/{{ item[0] }}'">
+                            ✖
+                        </div>
+                    {% endif %}
+
                 </div>
             {% endfor %}
         </div>

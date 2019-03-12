@@ -271,13 +271,19 @@ def profile(user_id):
     form = Profile()
     news_list = news_model.get_all(user_id)
     name, surname, email, = user_model.get(user_id)[1:4:]
+    if user_id == session['id']:
+        lock = True
+    else:
+        lock = False
+
     if form.validate_on_submit():
         title = form.title.data
         content = form.content.data
         news_model.insert(title, content, user_id)
         return redirect(f"/profile/{session['id']}")
+
     return render_template('profile.html', title=f'{name} {surname}', form=form, news=news_list,
-                           Name=name, Surname=surname)
+                           Name=name, Surname=surname, lock=lock)
 
 
 @app.route('/index')
@@ -285,13 +291,30 @@ def profile(user_id):
 def news():
     if user_status:
         news_list = news_model.get_feed(user_id)
-        return render_template('news.html', news=news_list)
+        return render_template('news.html', news=news_list, user=user_model)
     else:
         return redirect('/login')
 
 
 @app.route('/users/')
 def users():
+    if user_status:
+        user_list = user_model.get_all()
+        subs = []
+        for item in user_list:
+            if feed_model.exists_feed(user_id, item[0]):
+                subs.append(True)
+            else:
+
+                subs.append(False)
+
+        return render_template('users.html', test="<h2>test</h2>", users=zip(user_list, subs))
+    else:
+        return redirect('/login')
+
+
+@app.route('/groups/')
+def groups():
     if user_status:
         user_list = user_model.get_all()
         subs = []
