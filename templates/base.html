@@ -1,198 +1,279 @@
 <!doctype html>
 <html lang="en">
-<head>
+    <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <style type="text/css">
-        body {
-            font-family: "Times New Roman";
-            position: static;
-            margin: 0;
-            padding: 0;
-            background: url("https://cdn-images-1.medium.com/max/1200/1*kFaSuc5rVdJ_fM2c_bHszQ.png") no-repeat;
-            background-size: cover;
-        }
+        <style type="text/css">
+            body {
+                font-family: "Times New Roman";
+                margin: 0;
+                padding: 0;
+                background: url("https://cdn-images-1.medium.com/max/1200/1*kFaSuc5rVdJ_fM2c_bHszQ.png") no-repeat;
+                background-size: cover;
+            }
 
-        .navigate {
-            position: fixed;
-            height: 345px;
-            width: 180px;
-            background: white;
-            margin-left: 1%;
-            padding: 5px;
-            margin-top: 70px;
-            border-radius: 3px;
-            -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
-            -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
-        }
+            .transform {
+                position: absolute;
+                top: 200px;
+                width: 100%;
+                min-width: 1300px;
+                height: 600px;
+                z-index: -1;
+                background: #ffcc00;
+                -webkit-transform: skewY(-5deg);
+                -moz-transform: skewY(-5deg);
+                transform: skewY(-5deg);
+            }
 
-        .profile_button {
-            cursor: pointer;
-            width: 100%;
-            padding: 5px 0 50px 0;
-            border-radius: 3px;
-            text-align: left;
-            text-align-last: center;
-            transition: background-color ease-out 0.5s;
-        }
-
-        .page {
-            margin-top: 50px;
-            width: 100%;
-            height: 100%;
-        }
-
-        .transform {
-            position: absolute;
-            top: 200px;
-            width: 100%;
-            min-height: 600px;
-            background: #ffcc00;
-            -webkit-transform: skewY(-5deg);
-            -moz-transform: skewY(-5deg);
-            transform: skewY(-5deg);
-            z-index: -1;
-        }
-
-        .RegForm {
-            background: white;
-            margin-left: 44%;
-            padding: 50px;
-            min-width: 220px;
-            max-width: 220px;
-            margin-top: 270px;
-            border-radius: 3px;
-            -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
-            -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
-            box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
-        }
-
-        .move {
-            position: absolute;
-            margin-left: 12px;
-        }
-
-        .r_page {
-            background: white;
-            margin-right: 30%;
-            margin-left: 30%;
-            padding: 5px;
-            border-radius: 3px;
-        }
-
-        .LogRegError {
-            position: relative;
-            left: 0;
-            background: none;
-            padding: 0;
-            margin-right: 5%;
-            margin-left: 5%;
-        }
-
-        .post {
-            min-width: 645px;
-            background: white;
-            margin: 10px 30% 10px 30%;
-            padding: 0px 5px 0 5px;
-            border-radius: 3px;
-        }
-
-        .post_name {
-            font-size: 25px;
-        }
-
-        .post_content {
-            border-bottom: 2px solid red;
-        }
-
-        .delete_post {
-            width: 100%;
-        }
-
-        #button {
-            border: None;
-            margin-top: 5px;
-            transition: .5s;
-        }
-
-        #button:hover {
-            transform: scale(0.95);
-        }
-
-        input {
-            width: 90%;
-            border: none;
-            margin-left: 5%;
-            margin-right: 5%;
-            border-bottom: 2px solid red;
-        }
-
-        .profile_button:hover {
-            color: black;
-            background: #ffcc00;
-        }
+            .LogRegError {
+                position: relative;
+                left: 0;
+                background: none;
+                padding: 0;
+                margin-right: 5%;
+                margin-left: 5%;
+            }
 
 
-        .avatar>img {
-            width: 150px;
-            height: 150px;
-            border-radius: 3px;
-        }
 
-        .User_ID {
-            position: absolute;
-            top: 35px;
-            margin-left: 160px;
-        }
+            input {
+                width: 90%;
+                border: none;
+                margin-left: 5%;
+                margin-right: 5%;
+                border-bottom: 2px solid red;
+            }
 
-    </style>
+            .Title {
+                font-size: 25px;
+                font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+                margin-left: 5%;
+                margin-right: 5%;
+                margin-bottom: 20px;
+                border-bottom: 2px solid gray;
+            }
 
-    {% block head %}{% endblock %}
-    <title>{{ title }}</title>
+            .Sign {
+                display: inline-block;
+                position: relative;
+                top: 300px;
+                left: 60%;
+                width: 170px;
+                background: white;
+                padding: 15px;
+                border-radius: 3px;
+                -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+            }
 
-</head>
+            .Error {
+                width: 90%;
+                border: none;
+                margin-left: 5%;
+                margin-right: 5%;
+            }
 
-<body>
- {% if session['user_status'] %}
-        <div class="navigate">
+            .Input {
+                margin-bottom: 12px;
+            }
 
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/profile/{{ session['id'] }}'">
-                Моя Страница
-            </div>
+            .navigate {
+                display: inline-block;
+                position: absolute;
+                top: 250px;
+                height: 400px;
+                width: 180px;
+                background: white;
+                padding: 5px;
+                border-radius: 3px;
+                z-index: 10;
+                -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+            }
 
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/news'">
-                Новости
-            </div>
+            .navigate_button {
+                cursor: pointer;
+                width: 100%;
+                padding: 5px 0 5px 0;
+                border-radius: 3px;
+                text-align: left;
+                text-align-last: center;
+                transition: .5s;
+            }
 
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/message/'">
-                Сообщения
-            </div>
+            .navigate_button:hover {
+                color: black;
+                background: #ffcc00;
+            }
 
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/users/'">
-                Список пользователей
-            </div>
+            .page {
+                min-width: 1300px;
+                margin-left: 15%;
+                margin-right: 15%;
+            }
 
-            <div class="profile_button"
-                 onclick="javascript:document.location.href='/logout'">
-                Выход
+            .lPage,
+            .ProfilePage,
+            .r_page,
+            .ProfileInfo,
+            .User_ID,
+            .ProfileContent,
+            .PostCreate,
+            .PostDelete,
+            .Avatar {
+                display: inline-block;
+            }
+
+            .lPage {
+                padding: 50px 5px 0 5px;
+            }
+
+            .ProfilePage {
+                margin-left: 200px;
+            }
+
+            .ProfileInfo {
+                width: 1000px;
+                background: white;
+                padding: 5px;
+                border-radius: 3px;
+                -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+            }
+
+            .Avatar, .Avatar>img {
+                width: 170px;
+                height: 170px;
+                border-radius: 3px;
+            }
+
+            .User_ID {
+                font-size: 30px;
+                font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+                position: relative;
+                top: -145px;
+            }
+
+            .PostCreate {
+                background: white;
+                width: 990px;
+                margin: 5px;
+                padding: 5px;
+                border-radius: 3px;
+                -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+            }
+
+            .PostDelete {
+                position: relative;
+                transition: .5s;
+                border-radius: 3px;
+                background: #e4e4e4;
+                left: 875px;
+            }
+
+            .PostDelete:hover {
+                background-color: #ff5359;
+                color: white;
+                transform: scale(0.95);
+            }
+
+            #content, #title {
+                width: 96%;
+                margin: 5px 2% 5px 2%;
+            }
+            #content {
+                width: 945px;
+                max-width: 945px;
+                min-width: 945px;
+                min-height: 45px;
+                transition: .5s;
+            }
+            #CreatePost {
+                width: auto;
+                border: none;
+                margin: 0;
+            }
+
+            .Post {
+                background: white;
+                margin: 10px 5px 5px 5px;
+                padding: 5px;
+                border-radius: 3px;
+                width: 990px;
+                -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+            }
+
+            .PostTitle {
+                font-size: 20px;
+                font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+                position: relative;
+                border-bottom: 2px solid gray;
+                margin-bottom: 5px;
+            }
+
+            #button {
+                border: None;
+                margin-top: 5px;
+                transition: .5s;
+            }
+
+            #button:hover {
+                transform: scale(0.95);
+            }
+
+        </style>
+
+        {% block head %}{% endblock %}
+        <title>{{ title }}</title>
+    </head>
+
+    <body>
+        <div class="transform"></div>
+        <div class="page">
+            <div class="lPage">
+                {% if session['user_status'] %}
+
+                    <div class="navigate">
+
+                        <div class="navigate_button"
+                             onclick="javascript:document.location.href='/profile/{{ session['id'] }}'">
+                            Моя Страница
+                        </div>
+
+                        <div class="navigate_button"
+                             onclick="javascript:document.location.href='/news'">
+                            Новости
+                        </div>
+
+                        <div class="navigate_button"
+                             onclick="javascript:document.location.href='/message/'">
+                            Сообщения
+                        </div>
+
+                        <div class="navigate_button"
+                             onclick="javascript:document.location.href='/users/'">
+                            Список пользователей
+                        </div>
+
+                        <div class="navigate_button"
+                             onclick="javascript:document.location.href='/logout'">
+                            Выход
+                        </div>
+                    </div>
+
+                {% endif %}
+
+                {% block content %}{% endblock %}
             </div>
         </div>
-    {% endif %}
-<div class="transform"></div>
-
-<div class="page">
-    <main role="main" class="main_contents">
-        {% block content %}{% endblock %}
-    </main>
-
-
-</div>
-</body>
+    </body>
 </html>

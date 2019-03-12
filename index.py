@@ -206,14 +206,11 @@ class RegForm(FlaskForm):
     reg = SubmitField('Зарегистрироваться')
 
 
-class AddNewsForm(FlaskForm):
+class Profile(FlaskForm):
+    name = StringField('Имя')
     title = StringField('Заголовок новости', validators=[DataRequired()])
     content = TextAreaField('Текст новости', validators=[DataRequired()])
     submit = SubmitField('Добавить')
-
-
-class Profile(FlaskForm):
-    name = StringField('Имя')
 
 
 db = DB()
@@ -274,6 +271,11 @@ def profile(user_id):
     form = Profile()
     news_list = news_model.get_all(user_id)
     name, surname, email, = user_model.get(user_id)[1:4:]
+    if form.validate_on_submit():
+        title = form.title.data
+        content = form.content.data
+        news_model.insert(title, content, user_id)
+        return redirect(f"/profile/{session['id']}")
     return render_template('profile.html', title=f'{name} {surname}', form=form, news=news_list,
                            Name=name, Surname=surname)
 
@@ -292,7 +294,7 @@ def news():
 def users():
     if user_status:
         user_list = user_model.get_all()
-        subs= []
+        subs = []
         for item in user_list:
             if feed_model.exists_feed(user_id, item[0]):
                 subs.append(True)
@@ -300,10 +302,9 @@ def users():
 
                 subs.append(False)
 
-        return render_template('users.html', test = "<h2>test</h2>",users=zip(user_list,subs))
+        return render_template('users.html', test="<h2>test</h2>", users=zip(user_list, subs))
     else:
         return redirect('/login')
-
 
 
 @app.route('/subsribe/<int:follow_id>', methods=['GET'])
@@ -321,6 +322,7 @@ def unsubsribe(follow_id):
     feed_model.delete(user_id, follow_id)
     return redirect("/users")
 
+
 @app.route('/messages')
 def messages():
     if user_status:
@@ -330,25 +332,12 @@ def messages():
         return redirect('/login')
 
 
-@app.route('/add_news', methods=['GET', 'POST'])
-def add_news():
-    if not user_status:
-        return redirect('/login')
-    form = AddNewsForm()
-    if form.validate_on_submit():
-        title = form.title.data
-        content = form.content.data
-        news_model.insert(title, content, user_id)
-        return redirect("/index")
-    return render_template('add_news.html', title='Добавление новости', form=form, username=user_id)
-
-
 @app.route('/delete_news/<int:news_id>', methods=['GET'])
 def delete_news(news_id):
     if not user_status:
         return redirect('/login')
     news_model.delete(news_id)
-    return redirect("/index")
+    return redirect(f"/profile/{session['id']}")
 
 
 @app.route('/news', methods=['GET'])

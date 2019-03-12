@@ -1,37 +1,52 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    <div class="profile_page">
-    </div>
-   
-        <div class="l_page">
-        </div>
-
-        <div class="r_page">
-            <div class="add_post">
-                <a href="/add_news">Добавить новость</a>
-            </div>
-            <div class="avatar">
-                <img src="../static/img/404.png">
-            </div>
-            <div class="User_ID">
-                <h2>{{ Name }} {{ Surname }}</h2>
-            </div>
-
-        </div>
-        {% for item in news %}
-            <div class="post">
-                <div class="post_name">{{ item[1] }}</div>
-
-                <div class="post_content">
-                    {{ item[2] }}
+    <div class="ProfilePage">
+        <div class="ProfileInfo">
+                <div class="Avatar">
+                    <img src="../static/img/404.png">
                 </div>
 
-                <div class="delete_post">
-                    <a href="/delete_news/{{ item[0] }}">Удалить новость</a>
+                <div class="User_ID">{{ Name }} {{ Surname }}</div>
+        </div>
+
+        <div class="PostCreate">
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+
+                {{ form.title(placeholder='Заголовок новости') }}
+                {% for error in form.title.errors %}
+                    <script type='text/javascript'>
+                        document.write('<div class="Error">Введите заголовок новости!</div>');
+                    </script>
+                {% endfor %}
+
+                {{ form.content(placeholder='Текст новости',
+                    onclick="document.getElementById('content').style.height = '150px';") }}
+                {% for error in form.content.errors %}
+                    <script type='text/javascript'>
+                        document.write('<div class="Error">Введите текст новости!</div>');
+                    </script>
+                {% endfor %}
+
+                {{ form.submit(id="button") }}
+            </form>
+        </div>
+
+        <div class="ProfileContent">
+            {% for item in news %}
+                <div class="Post">
+                    <div class="PostTitle">{{ item[1] }}</div>
+
+                    <div class="PostContent">
+                        {{ item[2] }}
+                    </div>
+
+                    <div class="PostDelete" onclick="javascript:document.location.href='/delete_news/{{ item[0] }}'">
+                        Удалить новость
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}

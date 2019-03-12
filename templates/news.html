@@ -1,19 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    
     {% for item in news %}
+        <div class="Post">
+            <div class="PostTitle">{{ item[1] }}</div>
 
-        <div class="post">
-            <div class="post_name">{{ item[1] }}</div>
-
-            <div class="post_content">
+            <div class="PostContent">
                 {{ item[2] }}
             </div>
 
-            <div class="delete_post">
-                <a href="/delete_news/{{ item[0] }}">Удалить новость</a>
+            <div class="PostDelete" onclick="javascript:document.location.href='/delete_news/{{ item[0] }}'">
+                Удалить новость
             </div>
         </div>  
     {% endfor %}

@@ -1,29 +1,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <div class="l_page">
-            <div class="RegForm">
-                <h1>Авторизация</h1>
-                <p>
-                    {{ form.email(placeholder='Почта') }}<br>
+    <div class="Sign">
+        <div class="SignIn">
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+
+                <div class="Title">Авторизация</div>
+
+                <div class="Input">
+                    {{ form.email(placeholder='Почта') }}
                     {% for error in form.email.errors %}
                         <script type='text/javascript'>
-                            document.write('<div class="LogRegError">Введите почту!</div>');
+                            document.write('<div class="Error">Введите почту!</div>');
                         </script>
                     {% endfor %}
-                </p>
-                <p>
+                </div>
+
+                <div class="Input">
                     {{ form.password(placeholder='Пароль') }}<br>
                     {% for error in form.password.errors %}
                         <script type='text/javascript'>
-                            document.write('<div class="LogRegError">Введите пароль!</div>');
+                            document.write('<div class="Error">Введите пароль!</div>');
                         </script>
                     {% endfor %}
-                </p>
-                <p>{{ form.submit(id='button') }} {{ form.reg(id='button') }}</p>
-            </div>
+                </div>
+
+                <div class="buttons">{{ form.submit(id='button') }} {{ form.reg(id='button') }}</div>
+            </form>
         </div>
-    </form>
+    </div>
 {% endblock %}

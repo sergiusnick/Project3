@@ -1,26 +1,27 @@
 {% extends "base.html" %}
 
 {% block content %} 
-    
-    {% for item in users %}
-        <div class="post">
-            <div class="post_name">{{ item[0][1] }}</div>
+	<div class="ProfilePage">
+		{% for item in users %}
+			<div class="Post">
+				<div class="PostTitle">{{ item[0][1] }}</div>
 
-            <div class="post_content">
-                {{ item[0][2] }}
-            </div>
-		{% if item[1] %}
-		  <div class="unsubsribe">
-						<a href="/unsubsribe/{{ item[0][0] }}">Unubcribe</a>
-					</div>
-		{% else %}
+				<div class="PostContent">
+					{{ item[0][2] }}
+				</div>
+			{% if item[1] %}
+			  <div class="unsubsribe">
+							<a href="/unsubsribe/{{ item[0][0] }}">Unubcribe</a>
+						</div>
+			{% else %}
 
-				<div class="subsribe">
-						<a href="/subsribe/{{ item[0][0] }}">Subcribe</a>
-					</div>
-		{% endif %}
+					<div class="subsribe">
+							<a href="/subsribe/{{ item[0][0] }}">Subcribe</a>
+						</div>
+			{% endif %}
 
-          
-        </div>  
-    {% endfor %}
+
+			</div>
+		{% endfor %}
+	</div>
 {% endblock %}
