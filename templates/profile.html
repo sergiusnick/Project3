@@ -4,8 +4,25 @@
     <div class="ProfilePage">
         <div class="ProfileInfo">
                 <div class="Avatar">
+				 {% if userpic %}
+				  <img src="http://127.0.0.1:8080{{url_for('static',filename=''+userpic)}}" alt="text">
+				 {% else %}
                     <img src="../static/img/404.png">
+			     {% endif %}
                 </div>
+				 <form action="" method="post" enctype=multipart/form-data>
+                    {{ form2.hidden_tag() }}
+				   <p>Обновить фото<br>
+							{{ form2.image }}<br>
+							{% for error in form2.image.errors %}
+								<div class="alert alert-danger" role="alert">
+									{{ error }}
+								</div>
+							{% endfor %}
+						</p>
+						
+				<p>{{ form2.submit() }}</p>
+                </form>
 
                 <div class="User_ID">{{ Name }} {{ Surname }}</div>
         </div>
