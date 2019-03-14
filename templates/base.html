@@ -59,7 +59,7 @@
                 display: inline-block;
                 position: relative;
                 top: 300px;
-                left: 60%;
+                left: 200%;
                 width: 170px;
                 background: white;
                 padding: 15px;
@@ -83,13 +83,14 @@
             .navigate {
                 display: inline-block;
                 position: absolute;
-                top: 250px;
-                height: 400px;
-                width: 180px;
+                top: 25px;
+                left: 1%;
+                height: 200px;
+                width: 200px;
                 background: white;
-                padding: 5px;
-                border-radius: 3px;
-                z-index: 10;
+                padding: 10px;
+                border-radius: 6px;
+                z-index: 1;
                 -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
                 -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
                 box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
@@ -133,14 +134,14 @@
             }
 
             .ProfilePage {
-                margin-left: 200px;
+                margin-left: 70px;
             }
 
             .ProfileInfo {
                 width: 1000px;
                 background: white;
-                padding: 5px;
-                border-radius: 3px;
+                padding: 10px;
+                border-radius: 9px;
                 -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
                 -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
                 box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
@@ -149,7 +150,7 @@
             .Avatar, .Avatar>img {
                 width: 170px;
                 height: 170px;
-                border-radius: 3px;
+                border-radius: 50px;
             }
 
             .User_ID {
@@ -241,7 +242,21 @@
                 border-bottom: 2px solid gray;
                 margin-bottom: 5px;
             }
-
+            .MessagesPage {
+                width: 1000px;
+                background: white;
+                padding: 10px;
+                border-radius: 9px;
+                -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+                box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+             }
+             .Messages {
+             width: 100px;
+                background: white;
+                padding: 10px;
+                border-radius: 9px;
+             }
             #button {
                 border: None;
                 margin-top: 5px;
@@ -277,7 +292,12 @@
                         </div>
 
                         <div class="navigate_button"
-                             onclick="javascript:document.location.href='/message/'">
+                             onclick="javascript:document.location.href='/gallery/'">
+                            Фото
+                        </div>
+
+                        <div class="navigate_button"
+                             onclick="javascript:document.location.href='/messages/'">
                             Сообщения
                         </div>
 

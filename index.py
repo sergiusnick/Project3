@@ -61,7 +61,6 @@ class UserModel:
         return (True, row[0]) if row else (False, None)
 
 
-
 class UserPic:
     def __init__(self, connection):
         self.connection = connection
@@ -80,12 +79,12 @@ class UserPic:
         cursor = self.connection.cursor()
         fname, ffile = image
         print(fname, ffile)
-        f = open("static/img/" + str(user_id)+fname.filename, "wb")
+        f = open("static/img/" + str(user_id) + fname.filename, "wb")
         f.write(ffile)
         f.close()
         cursor.execute('''INSERT INTO users_image 
                           (user_id, image) 
-                          VALUES (?,?)''', (str(user_id), "img/"+str(user_id)+fname.filename))
+                          VALUES (?,?)''', (str(user_id), "img/" + str(user_id) + fname.filename))
         cursor.close()
         self.connection.commit()
 
@@ -106,7 +105,6 @@ class UserPic:
         cursor.execute(f'''SELECT * FROM users_image WHERE user_id = {user_id} order by id desc''')
         row = cursor.fetchone()
         return row[2] if row else False
-
 
 
 class NewsModel:
@@ -161,7 +159,7 @@ class NewsModel:
         self.connection.commit()
 
 
-class Message:
+class Messages:
     def __init__(self, connection):
         self.connection = connection
 
@@ -260,6 +258,7 @@ class Profile(FlaskForm):
     content = TextAreaField('Текст новости', validators=[DataRequired()])
     submit = SubmitField('Добавить')
 
+
 class Profile_edit(FlaskForm):
     image = FileField("Image")
     submit = SubmitField('Обновить')
@@ -270,12 +269,12 @@ user_model = UserModel(db.get_connection())
 news_model = NewsModel(db.get_connection())
 feed_model = Feed(db.get_connection())
 image_model = UserPic(db.get_connection())
-message_model = Message(db.get_connection())
+messages_model = Messages(db.get_connection())
 user_model.init_table()
 news_model.init_table()
 image_model.init_table()
 feed_model.init_table()
-message_model.init_table()
+messages_model.init_table()
 app = Flask(__name__, )
 app.config['SECRET_KEY'] = '12345'
 user_id = None
@@ -340,10 +339,11 @@ def profile(user_id):
 
     if form2.validate_on_submit():
         image = (form2.image.data, form2.image.data.read())
-        image_model.insert(user_id,image)
+        image_model.insert(user_id, image)
         return redirect(f"/profile/{session['id']}")
 
-    return render_template('profile.html', title=f'{name} {surname}', form=form,  form2=form2, userpic=userpic, news=news_list,
+    return render_template('profile.html', title=f'{name} {surname}', form=form, form2=form2, userpic=userpic,
+                           news=news_list,
                            Name=name, Surname=surname, lock=lock)
 
 
@@ -407,18 +407,20 @@ def unsubsribe(follow_id):
     return redirect("/users")
 
 
-@app.route('/gallery')
+@app.route('/gallery/')
 def gallery():
     if user_status:
         pics = image_model.get(user_id)
         return render_template('gallery.html', pics=pics)
     else:
         return redirect('/login')
-@app.route('/messages')
+
+
+@app.route('/messages/')
 def messages():
     if user_status:
-        news_list = news_model.get_all(user_id)
-        return render_template('news.html', news=news_list)
+        messages_list = messages_model.get_all(user_id)
+        return render_template('messages.html', messages=messages_list)
     else:
         return redirect('/login')
 

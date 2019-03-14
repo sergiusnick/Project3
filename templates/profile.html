@@ -10,6 +10,7 @@
                     <img src="../static/img/404.png">
 			     {% endif %}
                 </div>
+                <div class="User_ID">{{ Name }} {{ Surname }}</div>
 				 <form action="" method="post" enctype=multipart/form-data>
                     {{ form2.hidden_tag() }}
 				   <p>Обновить фото<br>
@@ -23,8 +24,6 @@
 						
 				<p>{{ form2.submit() }}</p>
                 </form>
-
-                <div class="User_ID">{{ Name }} {{ Surname }}</div>
         </div>
 
         {% if lock %}
