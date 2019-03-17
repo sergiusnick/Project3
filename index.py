@@ -223,13 +223,13 @@ class Feed:
 
     def delete(self, user_id, follow_id):
         cursor = self.connection.cursor()
-        cursor.execute(f'''DELETE FROM feed WHERE  user_id= {user_id} and follow_id = {follow_id}''')
+        cursor.execute(f"DELETE FROM feed WHERE  user_id= {user_id} and follow_id = {follow_id}")
         cursor.close()
         self.connection.commit()
 
     def exists_feed(self, user_id, test_id):
         cursor = self.connection.cursor()
-        cursor.execute("SELECT * FROM feed WHERE user_id = " + str(user_id) + " AND follow_id = " + str(test_id))
+        cursor.execute(f"SELECT * FROM feed WHERE user_id = {user_id} AND follow_id = {test_id}")
         row = cursor.fetchone()
         return True if row else False
 
@@ -329,8 +329,18 @@ def profile(user_id):
         lock = True
     else:
         lock = False
+
+    suon = feed_model.exists_feed(session['id'],user_id)
+    print(suon,user_id,session['id'])
+    user_list = user_model.get_all()
+    subs = []
+    for item in user_list:
+        if feed_model.exists_feed(user_id, item[0]):
+            subs.append(True)
+        else:
+            subs.append(False)
+
     userpic = image_model.exists(user_id)
-    print(userpic)
     if form.validate_on_submit():
         title = form.title.data
         content = form.content.data
@@ -338,12 +348,15 @@ def profile(user_id):
         return redirect(f"/profile/{session['id']}")
 
     if form2.validate_on_submit():
-        image = (form2.image.data, form2.image.data.read())
-        image_model.insert(user_id, image)
+        try:
+            image = (form2.image.data, form2.image.data.read())
+            image_model.insert(user_id, image)
+        except Exception as error:
+            print(error)
         return redirect(f"/profile/{session['id']}")
 
     return render_template('profile.html', title=f'{name} {surname}', form=form, form2=form2, userpic=userpic,
-                           news=news_list,
+                           news=news_list, suon=not suon, user=user_id,
                            Name=name, Surname=surname, lock=lock)
 
 
@@ -366,10 +379,9 @@ def users():
             if feed_model.exists_feed(user_id, item[0]):
                 subs.append(True)
             else:
-
                 subs.append(False)
 
-        return render_template('users.html', test="<h2>test</h2>", users=zip(user_list, subs))
+        return render_template('users.html', test="<h2>test</h2>", users=zip(user_list, subs), image_model=image_model)
     else:
         return redirect('/login')
 
@@ -391,20 +403,20 @@ def groups():
         return redirect('/login')
 
 
-@app.route('/subsribe/<int:follow_id>', methods=['GET'])
-def subsribe(follow_id):
+@app.route('/subscribe/<int:follow_id>', methods=['GET'])
+def subscribe(follow_id):
     if not user_status:
         return redirect('/login')
     feed_model.insert(user_id, follow_id)
-    return redirect("/users")
+    return redirect(f"/profile/{follow_id}")
 
 
-@app.route('/unsubsribe/<int:follow_id>', methods=['GET'])
-def unsubsribe(follow_id):
+@app.route('/unsubscribe/<int:follow_id>', methods=['GET'])
+def unsubscribe(follow_id):
     if not user_status:
         return redirect('/login')
     feed_model.delete(user_id, follow_id)
-    return redirect("/users")
+    return redirect(f"/profile/{follow_id}")
 
 
 @app.route('/gallery/')
@@ -440,3 +452,5 @@ def button_news():
 
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1', debug=True)
+    app.config["CACHE_TYPE"] = "null"
+
