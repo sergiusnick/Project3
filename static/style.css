@@ -1,0 +1,372 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background: url("https://cdn-images-1.medium.com/max/1200/1*kFaSuc5rVdJ_fM2c_bHszQ.png") fixed;
+    background-size: 2000px;
+}
+
+.transform {
+    position: fixed;
+    top: 200px;
+    width: 100%;
+    min-width: 1300px;
+    height: 600px;
+    z-index: -1;
+    background: rgb(245, 194, 0);
+    -webkit-transform: skewY(-5deg);
+    -moz-transform: skewY(-5deg);
+    transform: skewY(-5deg);
+}
+
+.LogRegError {
+    position: relative;
+    left: 0;
+    background: none;
+    padding: 0;
+    margin-right: 5%;
+    margin-left: 5%;
+}
+
+
+
+input {
+    width: 90%;
+    border: none;
+    margin-left: 5%;
+    margin-right: 5%;
+
+}
+
+input[type="text"],
+input[type="password"] {
+    border-bottom: 2px solid red;
+}
+
+.Title {
+    font-size: 25px;
+    font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    margin-left: 5%;
+    margin-right: 5%;
+    margin-bottom: 20px;
+    border-bottom: 2px solid gray;
+}
+
+.Sign {
+    display: inline-block;
+    position: relative;
+    top: 300px;
+    width: 170px;
+    background: white;
+    padding: 15px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+.Error {
+    width: 90%;
+    border: none;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.Input {
+    margin-bottom: 12px;
+}
+
+.navigate {
+    display: inline-block;
+    position: absolute;
+    top: 25px;
+    left: 1%;
+    height: 200px;
+    width: 200px;
+    background: white;
+    padding: 10px;
+    border-radius: 6px;
+    z-index: 1;
+    -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+.navigate_button {
+    cursor: pointer;
+    width: 100%;
+    padding: 5px 0 5px 0;
+    border-radius: 3px;
+    text-align: left;
+    text-align-last: center;
+    transition: .5s;
+}
+
+.navigate_button:hover {
+    color: black;
+    background: #ffcc00;
+}
+
+.page {
+    min-width: 1300px;
+    margin-left: 15%;
+    margin-right: 15%;
+}
+
+.lPage
+.PostContent,
+.Left_Bar,
+.Right_Bar,
+.M_Page,
+.Pr_Left_Page,
+.Pr_Right_Page,
+.r_page,
+.User_ID,
+.ProfileContent,
+.PostCreate,
+.PostDelete,
+.Avatar,
+.Small_Avatar {
+    display: inline-block;
+}
+
+.lPage {
+    padding: 50px 5px 0 5px;
+}
+
+.M_Page {
+    position: absolute;
+    left: 20%;
+}
+
+.Left_Bar {
+    position: absolute;
+    top: 0;
+}
+
+.Right_Bar {
+    position: absolute;
+    left: 225px;
+    width: 900px;
+}
+
+
+.User_Info {
+    background: white;
+    padding: 5px;
+    height: 150px;
+    margin: 10px;
+    width: 990px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+.Pr_Left_Page,
+.Pr_Right_Page {
+    padding: 10px;
+    background: white;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+.Pr_Right_Page {
+    min-height: 170px;
+    width: 990px;
+}
+
+.UploadButton,
+.Avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.User_Name {
+    position: relative;
+    font-size: 20px;
+    top: -50px;
+    left: 55px;
+    font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    border-bottom: 2px solid gray;
+}
+
+.Small_Avatar>img,
+.Avatar>img {
+    border-radius: 3px;
+    max-height: 300px;
+    max-width: 200px;
+    transition: .5s;
+    -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+.Small_Avatar>img:hover,
+.Avatar>img:hover {
+    border-radius: 10px;
+}
+
+.Back_In_Black {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 5;
+}
+
+.Upload_Avatar {
+    position: fixed;
+    padding: 10px;
+    top: 40%;
+    left: 40%;
+    width: 250px;
+    background: white;
+    z-index: 10;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+.Back_In_Black,
+.Upload_Avatar {
+    display: none;
+}
+
+.Small_Avatar>img{
+    max-height: 50px;
+    max-width: 50px;
+}
+
+.User_ID {
+    font-size: 30px;
+    font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    position: relative;
+    width: 100%;
+    border-bottom: 2px solid gray;
+}
+
+.PostCreate {
+    background: white;
+    width: 990px;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+.PostDelete {
+    cursor: pointer;
+    position: relative;
+    transition: .5s;
+    border-radius: 3px;
+    background: #e4e4e4;
+    left: 968px;
+    height: 21px;
+    width: 21px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.PostDelete:hover {
+    background-color: #ff5359;
+    color: white;
+    height: 21px;
+    width: 21px;
+    transform: scale(0.95);
+}
+
+.PostAuthor {
+    color: #00005b;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.PostAuthorContent:hover {
+    color: blue;
+}
+
+#content, #title {
+    width: 96%;
+    margin: 5px 2% 5px 2%;
+}
+
+#content {
+    width: 945px;
+    max-width: 945px;
+    min-width: 945px;
+    min-height: 45px;
+    transition: .5s;
+}
+
+#CreatePost {
+    width: auto;
+    border: none;
+    margin: 0;
+}
+
+.Post {
+    background: white;
+    margin: 10px 5px 5px 5px;
+    padding: 5px;
+    border-radius: 3px;
+    width: 990px;
+    -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+.PostTitle {
+    font-size: 20px;
+    font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
+    position: relative;
+    border-bottom: 2px solid gray;
+    margin-bottom: 5px;
+}
+
+.MessagesPage {
+    width: 1000px;
+    background: white;
+    padding: 10px;
+    border-radius: 9px;
+    -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+ }
+
+.Messages {
+    width: 100px;
+    background: white;
+    padding: 10px;
+    border-radius: 9px;
+}
+
+.back_button,
+.button {
+    font-family: 'Lucida Grande', 'Lucida Sans Unicode', 'Geneva', 'Verdana', sans-serif;
+    border: None;
+    margin-top: 5px;
+    transition: .5s;
+    color: black;
+    background: #ffcc00;
+    border-radius: 5px;
+}
+
+.back_button {
+    background: #e1e1e1;
+}
+
+.back_button:hover,
+.button:hover {
+    transform: scale(0.95);
+}

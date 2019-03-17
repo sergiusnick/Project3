@@ -1,26 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %} 
-	<div class="ProfilePage">
+	<div class="M_Page">
 		{% for item in users %}
-			<div class="Post">
-				<div class="PostTitle">{{ item[0][1] }}</div>
+			<div class="User_Info">
+					<div class="Small_Avatar">
+						{% if image_model.exists(item[0][0]) %}
+							<img src="{{ url_for('static', filename=''+image_model.exists(item[0][0])) }}" alt="../static/img/404.png">
+						{% else %}
+							<img src="../static/img/404.png">
+						{% endif %}
+					</div>
 
-				<div class="PostContent">
-					{{ item[0][2] }}
-				</div>
-			{% if item[1] %}
-			  <div class="unsubsribe">
-							<a href="/unsubsribe/{{ item[0][0] }}">Unubcribe</a>
-						</div>
-			{% else %}
-
-					<div class="subsribe">
-							<a href="/subsribe/{{ item[0][0] }}">Subcribe</a>
-						</div>
-			{% endif %}
-
-
+					<div class="User_Name">{{ item[0][1] }} {{ item[0][2] }}</div>
+					<div class="PostContent">
+						sdfs
+					</div>
 			</div>
 		{% endfor %}
 	</div>
