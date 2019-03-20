@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="M_Page">
+        <div class="Ps_Message">
+            <div class="Ps_Msg_Box">
+                {% for message in messages %}
+                    <div>
+                       {{ message[-1] }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+
+        <div class="MessageCreate">
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                {{ form.content(placeholder='Текст новости')}}
+                {% for error in form.content.errors %}
+                    <script type='text/javascript'>
+                        document.write('<div class="Error">Введите текст новости!</div>');
+                    </script>
+                {% endfor %}
+
+                {{ form.submit(class="button") }}
+            </form>
+        </div>
+    </div>
+{% endblock %}

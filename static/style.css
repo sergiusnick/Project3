@@ -113,7 +113,7 @@ input[type="password"] {
     margin-right: 15%;
 }
 
-.lPage
+.lPage,
 .PostContent,
 .Left_Bar,
 .Right_Bar,
@@ -163,6 +163,10 @@ input[type="password"] {
     box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
 }
 
+.Pr_Left_Page {
+    min-width: 200px;
+}
+
 .Pr_Left_Page,
 .Pr_Right_Page {
     padding: 10px;
@@ -185,9 +189,18 @@ input[type="password"] {
     justify-content: center;
 }
 
+.User_Link {
+    cursor: pointer;
+}
+
+.User_Link:hover {
+    color: #3f487d;
+}
+
 .User_Name {
     position: relative;
     font-size: 20px;
+    width: 94%;
     top: -50px;
     left: 55px;
     font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
@@ -203,6 +216,11 @@ input[type="password"] {
     -webkit-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
     -moz-box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
     box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+.Small_Avatar>img{
+    max-height: 50px;
+    max-width: 50px;
 }
 
 .Small_Avatar>img:hover,
@@ -238,11 +256,6 @@ input[type="password"] {
     display: none;
 }
 
-.Small_Avatar>img{
-    max-height: 50px;
-    max-width: 50px;
-}
-
 .User_ID {
     font-size: 30px;
     font-family: 'Consolas', 'Deja Vu Sans Mono', 'Bitstream Vera Sans Mono', monospace;
@@ -251,6 +264,7 @@ input[type="password"] {
     border-bottom: 2px solid gray;
 }
 
+.MessageCreate,
 .PostCreate {
     background: white;
     width: 990px;

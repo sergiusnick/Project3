@@ -6,9 +6,11 @@
             <div class="Pr_Left_Page">
                 <div class="Avatar">
                     {% if userpic %}
-                        <img src="{{ url_for('static', filename='' + userpic) }}" alt="../static/img/404.png">
+                        <img src="{{ url_for('static', filename='' + userpic) }}" alt="Image Not Found">
+
                     {% else %}
                         <img src="../static/img/404.png">
+
 			        {% endif %}
                 </div>
 
@@ -22,13 +24,19 @@
                             background.style.display = 'inline-block';
                         }
                     </script>
+
                 {% else %}
+                    <input class="button" type="button" value="Написать сообщение"
+                           onclick="javascript:document.location.href='/messages/{{ user }}'">
+
                     {% if suon %}
                         <input class="button" type="button" value="Подписаться"
                                onclick="javascript:document.location.href='/subscribe/{{ user }}'">
+
                     {% else %}
                         <input class="back_button" type="button" value="Отписаться"
                                onclick="javascript:document.location.href='/unsubscribe/{{ user }}'">
+
                     {% endif %}
                 {% endif %}
 

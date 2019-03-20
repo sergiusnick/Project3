@@ -1,4 +1,5 @@
 import sqlite3
+import time
 from flask import Flask, redirect, render_template, session
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FileField
@@ -69,7 +70,7 @@ class UserPic:
         cursor = self.connection.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS users_image 
                             (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                             user_id INTEGER, 
+                             user_id INTEGER,
                              image VARCHAR(200)
                              )''')
         cursor.close()
@@ -78,7 +79,6 @@ class UserPic:
     def insert(self, user_id, image):
         cursor = self.connection.cursor()
         fname, ffile = image
-        print(fname, ffile)
         f = open("static/img/" + str(user_id) + fname.filename, "wb")
         f.write(ffile)
         f.close()
@@ -132,7 +132,7 @@ class NewsModel:
 
     def get(self, news_id):
         cursor = self.connection.cursor()
-        cursor.execute('''SELECT * FROM news WHERE id = ?''' + (str(news_id)))
+        cursor.execute(f'''SELECT * FROM news WHERE id = {news_id}''')
         row = cursor.fetchone()
         return row
 
@@ -167,28 +167,29 @@ class Messages:
         cursor = self.connection.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS messages 
                                   (id INTEGER PRIMARY KEY AUTOINCREMENT, 
-                                   from_user INTEGER,
-                                   to_user INTEGER,
+                                   first_user INTEGER,
+                                   second_user INTEGER,
                                    content VARCHAR(2500)
                                    )''')
         cursor.close()
         self.connection.commit()
 
-    def insert(self, from_user, to_user, content):
+    def insert(self, first_user, second_user, content):
         cursor = self.connection.cursor()
         cursor.execute('''INSERT INTO messages 
-                            (from_user, to_user, content) 
-                            VALUES (?,?,?)''', (str(from_user), str(to_user), content))
+                            (first_user, second_user, content) 
+                            VALUES (?,?,?)''', (str(first_user), str(second_user), content))
         cursor.close()
         self.connection.commit()
 
-    def get_all(self, to_user, from_user=None):
+    def get_all(self, first_user, second_user=None):
         cursor = self.connection.cursor()
-        if from_user is None:
-            cursor.execute(f'''SELECT * FROM messages WHERE to_user = {to_user} ORDER BY id DESC''')
+        if not second_user:
+            cursor.execute(
+                f'''SELECT * FROM messages WHERE first_user= {first_user} or second_user = {first_user} ORDER BY id DESC''')
         else:
             cursor.execute(
-                f'''SELECT * FROM messages WHERE to_user = {to_user} and from_user = {from_user}  ORDER BY id DESC''')
+                f'''SELECT * FROM messages WHERE first_user= {first_user} and second_user = {second_user} ORDER BY id DESC''')
         rows = cursor.fetchall()
         return rows
 
@@ -197,6 +198,46 @@ class Messages:
         cursor.execute(f'''DELETE FROM messages WHERE id = {id}''')
         cursor.close()
         self.connection.commit()
+
+
+class Msg:
+    def __init__(self, connection):
+        self.connection = connection
+
+    def init_table(self):
+        cursor = self.connection.cursor()
+        cursor.execute('''CREATE TABLE IF NOT EXISTS Msg 
+                                  (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                   user_ INTEGER
+                                   )''')
+        cursor.close()
+        self.connection.commit()
+
+    def insert(self, user_id):
+        cursor = self.connection.cursor()
+        cursor.execute('''INSERT INTO Msg 
+                            (user_) 
+                            VALUES (?)''', (str(user_id)))
+        cursor.close()
+        self.connection.commit()
+
+    def get_all(self):
+        cursor = self.connection.cursor()
+        cursor.execute(f'''SELECT * FROM Msg ORDER BY id DESC''')
+        rows = cursor.fetchall()
+        return rows
+
+    def delete(self, user_id):
+        cursor = self.connection.cursor()
+        cursor.execute(f"DELETE FROM Msg WHERE  user_= {user_id}")
+        cursor.close()
+        self.connection.commit()
+
+    def exists_msg(self, user_id):
+        cursor = self.connection.cursor()
+        cursor.execute(f"SELECT * FROM Msg WHERE user_ = {user_id}")
+        row = cursor.fetchone()
+        return True if row else False
 
 
 class Feed:
@@ -264,17 +305,24 @@ class Profile_edit(FlaskForm):
     submit = SubmitField('Обновить')
 
 
+class Message(FlaskForm):
+    content = TextAreaField('Текст новости', validators=[DataRequired()])
+    submit = SubmitField('Добавить')
+
+
 db = DB()
 user_model = UserModel(db.get_connection())
 news_model = NewsModel(db.get_connection())
 feed_model = Feed(db.get_connection())
 image_model = UserPic(db.get_connection())
 messages_model = Messages(db.get_connection())
+msg_model = Msg(db.get_connection())
 user_model.init_table()
 news_model.init_table()
 image_model.init_table()
 feed_model.init_table()
 messages_model.init_table()
+msg_model.init_table()
 app = Flask(__name__, )
 app.config['SECRET_KEY'] = '12345'
 user_id = None
@@ -292,7 +340,6 @@ def login():
         if form.validate_on_submit() and user_status:
             session['user_status'] = True
             session['id'], session['name'], session['surname'], session['email'] = user_model.get(user_id)[:4]
-            print(user_model.get(user_id))
             return redirect('/news')
     elif form.reg.data:
         return redirect('/register')
@@ -313,7 +360,7 @@ def register():
     elif form.reg.data:
         if form.validate_on_submit():
             if form.password.data == form.password_test.data:
-                user_model.insert(form.email.data, form.surname.data, form.email.data, form.password.data)
+                user_model.insert(form.username.data, form.surname.data, form.email.data, form.password.data)
                 return redirect('/login')
 
     return render_template('register.html', title='Авторизация', form=form)
@@ -330,8 +377,7 @@ def profile(user_id):
     else:
         lock = False
 
-    suon = feed_model.exists_feed(session['id'],user_id)
-    print(suon,user_id,session['id'])
+    suon = feed_model.exists_feed(session['id'], user_id)
     user_list = user_model.get_all()
     subs = []
     for item in user_list:
@@ -360,6 +406,33 @@ def profile(user_id):
                            Name=name, Surname=surname, lock=lock)
 
 
+@app.route('/messages/')
+def messages():
+    if user_status:
+        user = msg_model.get_all()
+        return render_template('messages.html', user=user, user_model=user_model)
+    else:
+        return redirect('/login')
+
+
+@app.route('/messages/<int:user_id>', methods=['GET', 'POST'])
+def personal_message(user_id):
+    if user_status:
+        form = Message()
+        if not msg_model.exists_msg(user_id):
+            msg_model.insert(user_id)
+        messages_list = messages_model.get_all(session['id'], user_id)
+        messages_list = messages_list + messages_model.get_all(user_id, session['id'])
+        if form.validate_on_submit():
+            content = form.content.data
+            messages_model.insert(session['id'], user_id, content)
+            return redirect(f'messages/{user_id}')
+
+        return render_template('personal_message.html', form=form, messages=messages_list)
+    else:
+        return redirect('/login')
+
+
 @app.route('/index')
 @app.route('/news')
 def news():
@@ -381,7 +454,7 @@ def users():
             else:
                 subs.append(False)
 
-        return render_template('users.html', test="<h2>test</h2>", users=zip(user_list, subs), image_model=image_model)
+        return render_template('users.html', users=zip(user_list, subs), image_model=image_model)
     else:
         return redirect('/login')
 
@@ -395,7 +468,6 @@ def groups():
             if feed_model.exists_feed(user_id, item[0]):
                 subs.append(True)
             else:
-
                 subs.append(False)
 
         return render_template('users.html', test="<h2>test</h2>", users=zip(user_list, subs))
@@ -428,15 +500,6 @@ def gallery():
         return redirect('/login')
 
 
-@app.route('/messages/')
-def messages():
-    if user_status:
-        messages_list = messages_model.get_all(user_id)
-        return render_template('messages.html', messages=messages_list)
-    else:
-        return redirect('/login')
-
-
 @app.route('/delete_news/<int:news_id>', methods=['GET'])
 def delete_news(news_id):
     if not user_status:
@@ -453,4 +516,3 @@ def button_news():
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1', debug=True)
     app.config["CACHE_TYPE"] = "null"
-

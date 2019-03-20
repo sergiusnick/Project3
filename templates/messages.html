@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="MessagesPage">
-        <div class="Messages">
-
+    <div class="M_Page">
+        <div class="Message">
+            {% for key in user %}
+                <div class="Msg_User">
+                    {{ user_model.get(key[-1]) }}
+                </div>
+            {% endfor %}
         </div>
+    </div>
 {% endblock %}

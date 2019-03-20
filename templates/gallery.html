@@ -1,17 +1,11 @@
 {% extends "base.html" %} 
 
 {% block content %}
-    <div class="ProfilePage">
+    <div class="M_Page">
         {% for item in pics %}
-
             <div class="Post">
-           
-				  <img src="http://127.0.0.1:8080{{url_for('static',filename=''+item[2])}}" alt="text">
-
-
+				  <img src="{{ url_for('static',filename=''+item[2]) }}" alt="Image Not Found">
             </div>
-			<br>
-
         {% endfor %}
     </div>
 {% endblock %}
