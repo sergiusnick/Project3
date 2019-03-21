@@ -7,7 +7,7 @@
 				<div class="User_Info">
 						<div class="Small_Avatar">
 							{% if image_model.exists(item[0][0]) %}
-								<img src="{{ url_for('static', filename=''+image_model.exists(item[0][0])) }}" alt="../static/img/404.png">
+								<img src="{{ url_for('static', filename=''+image_model.exists(item[0][0])) }}" alt="Image Not Found">
 							{% else %}
 								<img src="../static/img/404.png">
 							{% endif %}

@@ -29,8 +29,7 @@ class UserModel:
                              user_name VARCHAR(50),
                              user_surname VARCHAR(50),
                              user_email VARCHAR(50),
-                             password_hash VARCHAR(128),
-                             user_type INTEGER
+                             password_hash VARCHAR(128)
                              )''')
         cursor.close()
         self.connection.commit()
@@ -186,10 +185,10 @@ class Messages:
         cursor = self.connection.cursor()
         if not second_user:
             cursor.execute(
-                f'''SELECT * FROM messages WHERE first_user= {first_user} or second_user = {first_user} ORDER BY id DESC''')
+                f'''SELECT * FROM messages WHERE first_user= {first_user} or second_user= {first_user} ORDER BY id DESC''')
         else:
             cursor.execute(
-                f'''SELECT * FROM messages WHERE first_user= {first_user} and second_user = {second_user} ORDER BY id DESC''')
+                f'''SELECT * FROM messages WHERE (first_user= {first_user} and second_user= {second_user}) or (first_user= {second_user} and second_user= {first_user}) ORDER BY id DESC''')
         rows = cursor.fetchall()
         return rows
 
@@ -208,34 +207,35 @@ class Msg:
         cursor = self.connection.cursor()
         cursor.execute('''CREATE TABLE IF NOT EXISTS Msg 
                                   (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                   user_ INTEGER
+                                   first_user INTEGER,
+                                   second_user INTEGER
                                    )''')
         cursor.close()
         self.connection.commit()
 
-    def insert(self, user_id):
+    def insert(self, first, second):
         cursor = self.connection.cursor()
         cursor.execute('''INSERT INTO Msg 
-                            (user_) 
-                            VALUES (?)''', (str(user_id)))
+                            (first_user, second_user) 
+                            VALUES (?,?)''', (str(first), str(second)))
         cursor.close()
         self.connection.commit()
 
-    def get_all(self):
+    def get(self, user):
         cursor = self.connection.cursor()
-        cursor.execute(f'''SELECT * FROM Msg ORDER BY id DESC''')
+        cursor.execute(f'''SELECT * FROM Msg WHERE first_user= {user} or second_user= {user} ORDER BY id DESC''')
         rows = cursor.fetchall()
         return rows
 
-    def delete(self, user_id):
+    def delete(self, user):
         cursor = self.connection.cursor()
-        cursor.execute(f"DELETE FROM Msg WHERE  user_= {user_id}")
+        cursor.execute(f"DELETE FROM Msg WHERE first_user= {user_id}")
         cursor.close()
         self.connection.commit()
 
-    def exists_msg(self, user_id):
+    def exists_msg(self, first, second):
         cursor = self.connection.cursor()
-        cursor.execute(f"SELECT * FROM Msg WHERE user_ = {user_id}")
+        cursor.execute(f"SELECT * FROM Msg WHERE (first_user= {first} and second_user= {second}) or (first_user= {second} and second_user= {first}) ORDER BY id DESC")
         row = cursor.fetchone()
         return True if row else False
 
@@ -257,7 +257,7 @@ class Feed:
     def insert(self, user_id, follow_id):
         cursor = self.connection.cursor()
         cursor.execute('''INSERT INTO feed 
-                            ( user_id, follow_id) 
+                            (user_id, follow_id)
                             VALUES (?,?)''', (str(user_id), str(follow_id)))
         cursor.close()
         self.connection.commit()
@@ -306,8 +306,8 @@ class Profile_edit(FlaskForm):
 
 
 class Message(FlaskForm):
-    content = TextAreaField('Текст новости', validators=[DataRequired()])
-    submit = SubmitField('Добавить')
+    content = TextAreaField('Напишите сообщение…', validators=[DataRequired()])
+    submit = SubmitField('Отправить')
 
 
 db = DB()
@@ -409,8 +409,8 @@ def profile(user_id):
 @app.route('/messages/')
 def messages():
     if user_status:
-        user = msg_model.get_all()
-        return render_template('messages.html', user=user, user_model=user_model)
+        user = msg_model.get(session['id'])
+        return render_template('messages.html', user=user, user_model=user_model, image_model=image_model)
     else:
         return redirect('/login')
 
@@ -419,8 +419,8 @@ def messages():
 def personal_message(user_id):
     if user_status:
         form = Message()
-        if not msg_model.exists_msg(user_id):
-            msg_model.insert(user_id)
+        if not msg_model.exists_msg(session['id'], user_id):
+            msg_model.insert(session['id'], user_id)
         messages_list = messages_model.get_all(session['id'], user_id)
         messages_list = messages_list + messages_model.get_all(user_id, session['id'])
         if form.validate_on_submit():
@@ -428,7 +428,7 @@ def personal_message(user_id):
             messages_model.insert(session['id'], user_id, content)
             return redirect(f'messages/{user_id}')
 
-        return render_template('personal_message.html', form=form, messages=messages_list)
+        return render_template('personal_message.html', form=form, messages=messages_list[::-1])
     else:
         return redirect('/login')
 

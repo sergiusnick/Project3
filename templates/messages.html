@@ -4,7 +4,41 @@
         <div class="Message">
             {% for key in user %}
                 <div class="Msg_User">
-                    {{ user_model.get(key[-1]) }}
+                    {% if key[-1] != session['id'] %}
+                        <div class="Small_Avatar" onclick="javascript:document.location.href='/profile/{{ key[-1] }}'">
+							{% if image_model.exists(key[-1]) %}
+								<img src="{{ url_for('static', filename=''+image_model.exists(key[-1])) }}" alt="Image Not Found">
+
+							{% else %}
+								<img src="../static/img/404.png">
+
+							{% endif %}
+						</div>
+                        <div class="Msg_User_Info" onclick="javascript:document.location.href='/messages/{{ key[-1] }}'">
+                            <div class="User_Name">
+                                {{ user_model.get(key[-1])[1] }} {{ user_model.get(key[-1])[2] }}
+
+                            </div>
+                        </div>
+
+                    {% else %}
+                        <div class="Small_Avatar" onclick="javascript:document.location.href='/profile/{{ key[-2] }}'">
+							{% if image_model.exists(key[-2]) %}
+								<img src="{{ url_for('static', filename=''+image_model.exists(key[-2])) }}" alt="Image Not Found">
+
+							{% else %}
+								<img src="../static/img/404.png">
+
+							{% endif %}
+						</div>
+                        <div class="Msg_User_Info" onclick="javascript:document.location.href='/messages/{{ key[-2] }}'">
+                            <div class="User_Name">
+                                {{ user_model.get(key[-2])[1] }} {{ user_model.get(key[-2])[2] }}
+
+                            </div>
+                        </div>
+
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>

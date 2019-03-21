@@ -11,8 +11,8 @@
     <body>
         <div class="transform"></div>
         <div class="Back_In_Black"></div>
-        <div class="page">
-            <div class="lPage">
+        <div class="Page">
+            <div class="L_Page">
                 {% if session['user_status'] %}
 
                     <div class="navigate">
@@ -33,13 +33,13 @@
                         </div>
 
                         <div class="navigate_button"
-                             onclick="javascript:document.location.href='/gallery/'">
-                            Мои фото
+                             onclick="javascript:document.location.href='/users/'">
+                            Друзья
                         </div>
 
                         <div class="navigate_button"
-                             onclick="javascript:document.location.href='/users/'">
-                            Список пользователей
+                             onclick="javascript:document.location.href='/gallery/'">
+                            Фотографии
                         </div>
 
                         <div class="navigate_button"
