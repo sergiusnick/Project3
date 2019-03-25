@@ -5,8 +5,26 @@
         <div class="Ps_Message">
             <div class="Message_Box">
                     {% for message in messages %}
-                        <div>
-                           {{ message }}
+                        <div class="msg">
+                            <div class="Author">
+                                <div class="Small_Avatar" onclick="javascript:document.location.href='/profile/{{ message[1] }}'">
+                                    {% if image_model.exists(message[1]) %}
+                                        <img src="{{ url_for('static', filename=''+image_model.exists(message[1])) }}" alt="Image Not Found">
+                                    {% else %}
+                                        <img src="../static/img/404.png">
+                                    {% endif %}
+                                </div>
+
+                                <div class="Pr_Msg_User_Info" onclick="javascript:document.location.href='/messages/{{ message[1] }}'">
+                                    <div class="User_Name">
+                                        {{ user_model.get(message[1])[1] }} {{ user_model.get(message[1])[2] }}
+                                    </div>
+                                </div>
+
+                                <div class="msg_content">
+                                    {{ message[-1] }}
+                                </div>
+                            </div>
                         </div>
                     {% endfor %}
             </div>

@@ -422,13 +422,13 @@ def personal_message(user_id):
         if not msg_model.exists_msg(session['id'], user_id):
             msg_model.insert(session['id'], user_id)
         messages_list = messages_model.get_all(session['id'], user_id)
-        messages_list = messages_list + messages_model.get_all(user_id, session['id'])
         if form.validate_on_submit():
             content = form.content.data
             messages_model.insert(session['id'], user_id, content)
             return redirect(f'messages/{user_id}')
 
-        return render_template('personal_message.html', form=form, messages=messages_list[::-1])
+        return render_template('personal_message.html', form=form, messages=messages_list,
+                               user_model=user_model, image_model=image_model)
     else:
         return redirect('/login')
 
@@ -495,7 +495,7 @@ def unsubscribe(follow_id):
 def gallery():
     if user_status:
         pics = image_model.get(user_id)
-        return render_template('gallery.html', pics=pics)
+        return render_template('gallery.html', pics=pics[::-1])
     else:
         return redirect('/login')
 

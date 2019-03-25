@@ -1,27 +1,27 @@
 {% extends "base.html" %}
 
-{% block content %} 
-	<div class="M_Page">
-		{% for item in users %}
-			{% if item[0][0] != session['id'] %}
-				<div class="User_Info">
-						<div class="Small_Avatar">
-							{% if image_model.exists(item[0][0]) %}
-								<img src="{{ url_for('static', filename=''+image_model.exists(item[0][0])) }}" alt="Image Not Found">
-							{% else %}
-								<img src="../static/img/404.png">
-							{% endif %}
-						</div>
+{% block content %}
+    <div class="M_Page">
+        <div class="Friends">
+            {% for item in users %}
+                {% if item[0][0] != session['id'] %}
+                <div class="User" onclick="javascript:document.location.href='/profile/{{ item[0][0] }}'">
+                    <div class="Small_Avatar">
+                        {% if image_model.exists(item[0][0]) %}
+                            <img src="{{ url_for('static', filename='' + image_model.exists(item[0][0])) }}" alt="Image Not Found">
+                        {% else %}
+                            <img src="../static/img/404.png">
+                        {% endif %}
+                    </div>
 
-					<div class="User_Name">
-						<div class="User_Link" onclick="javascript:document.location.href='/profile/{{ item[0][0] }}'">
-							{{ item[0][1] }} {{ item[0][2] }}
-						</div>
-					</div>
-						<div class="PostContent">
-						</div>
-				</div>
-			{% endif %}
-		{% endfor %}
-	</div>
+                    <div class="Msg_User_Info">
+                        <div class="User_Name">
+                            {{ item[0][1] }} {{ item[0][2] }}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

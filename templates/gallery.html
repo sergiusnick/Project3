@@ -2,10 +2,12 @@
 
 {% block content %}
     <div class="M_Page">
-        {% for item in pics %}
-            <div class="Post">
-				  <img src="{{ url_for('static',filename=''+item[2]) }}" alt="Image Not Found">
-            </div>
-        {% endfor %}
+        <div class="G_page">
+            {% for item in pics %}
+                <div class="Picture">
+                    <img src="{{ url_for('static',filename=''+item[2]) }}" alt="Image Not Found">
+                </div>
+            {% endfor %}
+        </div>
     </div>
 {% endblock %}
