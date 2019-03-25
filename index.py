@@ -1,9 +1,13 @@
 import sqlite3
 import time
+import json
 from flask import Flask, redirect, render_template, session
+from flask import Flask, jsonify, make_response, request
+from flask_restful import reqparse, abort, Api, Resource
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, FileField
 from wtforms.validators import DataRequired
+from requests import get, post, delete, put
 
 
 class DB:
@@ -235,7 +239,8 @@ class Msg:
 
     def exists_msg(self, first, second):
         cursor = self.connection.cursor()
-        cursor.execute(f"SELECT * FROM Msg WHERE (first_user= {first} and second_user= {second}) or (first_user= {second} and second_user= {first}) ORDER BY id DESC")
+        cursor.execute(
+            f"SELECT * FROM Msg WHERE (first_user= {first} and second_user= {second}) or (first_user= {second} and second_user= {first}) ORDER BY id DESC")
         row = cursor.fetchone()
         return True if row else False
 
@@ -310,6 +315,35 @@ class Message(FlaskForm):
     submit = SubmitField('Отправить')
 
 
+def abort_if_not_new(news_id):
+    if not NewsModel(db.get_connection()).get(news_id):
+        abort(404, message="not found id= " + str(news_id))
+
+
+class ApiNews(Resource):
+    def get(self, news_id):
+        abort_if_not_new(news_id)
+        news = NewsModel(db.get_connection()).get(news_id)
+        return jsonify({"news": news})
+
+    def delete(self, news_id):
+        abort_if_not_new(news_id)
+        news = NewsModel(db.get_connection()).delete(news_id)
+        return jsonify({"success": "ok"})
+
+
+class ApiNewsList(Resource):
+    def get(self):
+        news = NewsModel(db.get_connection()).get_all()
+        return jsonify({"news": news})
+
+    def post(self):
+        data = parser.parse_args()
+        news = NewsModel(db.get_connection())
+        news.insert(data['title'], data['content'], data['user_id'])
+        return jsonify({"success": "ok"})
+
+
 db = DB()
 user_model = UserModel(db.get_connection())
 news_model = NewsModel(db.get_connection())
@@ -324,7 +358,14 @@ feed_model.init_table()
 messages_model.init_table()
 msg_model.init_table()
 app = Flask(__name__, )
+api = Api(app)
 app.config['SECRET_KEY'] = '12345'
+parser = reqparse.RequestParser()
+parser.add_argument("title", required=True)
+parser.add_argument("content", required=True)
+parser.add_argument("user_id", required=True, type=int)
+api.add_resource(ApiNewsList, "/api/news")
+api.add_resource(ApiNews, "/api/news/<int:news_id>")
 user_id = None
 user_status = False
 
